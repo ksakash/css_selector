@@ -69,15 +69,23 @@ function download(content, fileName, contentType) {
 const save_button = document.querySelector("#save");
 
 function getContent() {
-    const rows = document.querySelectorAll('#table > tbody > tr');
-    console.log(rows);
+    const divs = document.querySelectorAll('#table > tbody > div');
     var content = {};
-    for(let i = 0; i < rows.length; i++) {
-        var row = rows[i];
-        var cells = row.querySelectorAll('td > input');
-        var key = cells[0].value;
-        var value = cells[1].value;
-        content[key] = value;
+    for(let i = 0; i < divs.length; i++) {
+        var divElement = divs[i];
+        var attribute_key = divElement.querySelector('td.attribute_key > input').value;
+        if(attribute_key == "") {
+            continue;
+        }
+        content[attribute_key] = [];
+        var values = divElement.querySelectorAll('tr > td.attribute_value > input');
+        for(let i = 0; i < values.length; i++) {
+            var val = values[i];
+            if(val.value === "") {
+                continue;
+            }
+            content[attribute_key].push(val.value);
+        }
     }
     return content;
 }
