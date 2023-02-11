@@ -6,6 +6,10 @@ const onClickHandler = (e) => {
 const button = document.querySelector('#add');
 button.addEventListener("click", onClickHandler);
 
+function createEmptyRow(value) {
+
+}
+
 function renderRow(table, key, value, count) {
     var selector_div = document.createElement("div");
     selector_div.setAttribute("id", count);
@@ -50,9 +54,6 @@ function onAddSelectorButton() {
     var newInput = document.createElement("input");
     valueCell.append(newInput);
     var buttonCell = newRow.insertCell(2);
-    // var btn = document.createElement("button");
-    // btn.textContent = "ADD";
-    // btn.addEventListener("click", onAddSelectorButton);
     buttonCell.append(buttonElement);
     divElement.appendChild(newRow);
 }
@@ -91,7 +92,7 @@ function getContent() {
 }
 
 const onClickSaver = (e) => {
-    var fileName = "file.json";
+    var fileName = "selectors.json";
     var type = "text/json;charset=utf-8";
     var content = getContent();
     console.log(content);
@@ -104,8 +105,9 @@ function renderValues(list) {
     var table = document.getElementById('table');
     var count = 0;
     for(var key in list) {
-        var value = list[key];
-        renderRow(table, key, value, count);
+        var values = list[key];
+        console.log(values);
+        renderRow(table, key, values, count);
         count += 1;
     }
 }

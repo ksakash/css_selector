@@ -11,15 +11,13 @@ app.get("/", function(req, res) {
 });
 
 function readSelectorFile() {
-    var filename = './data/selectors.json';
+    var filename = '/home/ksakash/Downloads/selectors.json';
     var dict = require(filename);
     return dict;
 }
 
 app.get("/selectors", function(req, res) {
-    // console.log("selector request");
     let selector_dict = readSelectorFile();
-    // console.log(selector_dict);
     res.json(selector_dict).end();
 });
 
