@@ -7,10 +7,21 @@ const button = document.querySelector('#add');
 button.addEventListener("click", onClickHandler);
 
 function createEmptyRow(value) {
-
+    var newRow = document.createElement("tr");
+    var emptyCell = newRow.insertCell(0);
+    var inputElement = document.createElement("input");
+    inputElement.setAttribute("style", "display: none;");
+    emptyCell.append(inputElement);
+    var valueCell = newRow.insertCell(1);
+    valueCell.setAttribute("class", "attribute_value");
+    var newInput = document.createElement("input");
+    newInput.setAttribute("value", value);
+    valueCell.append(newInput);
+    return newRow;
 }
 
-function renderRow(table, key, value, count) {
+function renderRow(table, key, values, count) {
+    var value = values[0];
     var selector_div = document.createElement("div");
     selector_div.setAttribute("id", count);
     var row = document.createElement("tr");
@@ -24,13 +35,26 @@ function renderRow(table, key, value, count) {
     newInput2.setAttribute("value", value);
     cell1.append(newInput);
     cell2.append(newInput2);
-    var cell3 = row.insertCell(2);
     cell2.setAttribute("class", "attribute_value");
+
+    var last_row = row;
+    var row_array = [row];
+
+    for(let i = 1; i < values.length; i++) {
+        var newVal = values[i];
+        var newRow = createEmptyRow(newVal);
+        row_array.push(newRow);
+        last_row = newRow;
+    }
     var btn = document.createElement("button");
     btn.textContent = "ADD";
     btn.addEventListener("click", onAddSelectorButton);
+    var cell3 = last_row.insertCell(2);
     cell3.append(btn);
-    selector_div.appendChild(row);
+    for(let i = 0; i < row_array.length; i++) {
+        var new_row = row_array[i];
+        selector_div.appendChild(new_row);
+    }
     table.querySelector("tbody").appendChild(selector_div);
 }
 
@@ -95,7 +119,6 @@ const onClickSaver = (e) => {
     var fileName = "selectors.json";
     var type = "text/json;charset=utf-8";
     var content = getContent();
-    console.log(content);
     download(content, fileName, type);
 }
 
@@ -106,7 +129,6 @@ function renderValues(list) {
     var count = 0;
     for(var key in list) {
         var values = list[key];
-        console.log(values);
         renderRow(table, key, values, count);
         count += 1;
     }
